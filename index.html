@@ -224,10 +224,15 @@
         function endPopups() {
             document.getElementById("clappingAudio").play();
             displayConfetti();
+ 
+            // Sembunyikan semua pop-up
             setTimeout(() => {
-                alert("Semoga hari mu menyenankan!");
-            }, 3000);
+            for (let i = 1; i <= 4; i++) {
+            document.getElementById(`popup${i}`).style.display = "none";
         }
+        alert("Semoga harimu menyenangkan!");
+    }, 3000);
+}
 
         function displayConfetti() {
             var confetti = document.getElementById("confetti");
