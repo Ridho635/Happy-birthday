@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url("background.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .popup {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            max-width: 400px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        .popup p {
+            margin-bottom: 20px;
+        }
+
+        .container input[type="text"] {
+            display: block;
+        }
+
+        .container.hide-input {
+            display: none;
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: none;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Confetti style */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        /* Responsive for mobile */
+        @media (max-width: 768px) {
+            .container {
+                width: 80%;
+            }
+
+            .popup {
+                width: 80%;
+            }
+        }
+
+        /* Ridho button style */
+        .github-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #24292f;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .github-button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Audio Elements -->
+    <audio id="happyBirthdayAudio" src="Jamrud - Selamat Ulang Tahun (lyrics).mp3" preload="auto"></audio>
+    <audio id="clappingAudio" src="tepuk-tangan.mp3" preload="auto"></audio>
+
+    <div class="container" id="inputContainer">
+        <h2>Selamat Ulang Tahun!</h2>
+        <input type="text" id="nameInput" placeholder="Masukkan Nama" />
+        <button onclick="startPopup()">Konfirmasi</button>
+        <a href="https://github.com/Ridho635" target="_blank">
+            <button class="github-button">BY:Ridho</button>
+        </a>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading"></div>
+
+    <div class="popup" id="popup1">
+        <p>Selamat Ulang Tahun, <span id="popupName"></span>!</p>
+        <button onclick="nextPopup(2)">Amin</button>
+    </div>
+
+    <div class="popup" id="popup2">
+        <p>Semoga panjang umur!</p>
+        <button onclick="nextPopup(3)">Amin</button>
+    </div>
+
+    <div class="popup" id="popup3">
+        <p>Semoga sehat selalu!</p>
+        <button onclick="nextPopup(4)">Amin</button>
+    </div>
+
+    <div class="popup" id="popup4">
+        <p>Dan dilancarkan segala urusannya!</p>
+        <button onclick="endPopups()">Selesai</button>
+    </div>
+    <div class="confetti" id="confetti"></div>
+
+    <script>
+        let currentPopup = 0;
+
+        function startPopup() {
+            var name = document.getElementById("nameInput").value;
+            if (name) {
+                // Tampilkan loading spinner
+                document.getElementById("loading").style.display = "block";
+
+                // Sembunyikan form setelah nama diisi
+                document.getElementById("inputContainer").classList.add("hide-input");
+
+                // Simulasikan loading sebelum pop-up pertama
+                setTimeout(() => {
+                    // Sembunyikan loading spinner
+                    document.getElementById("loading").style.display = "none";
+
+                    // Play Happy Birthday sound
+                    document.getElementById("happyBirthdayAudio").play();
+                    
+                    // Tampilkan pop-up pertama
+                    document.getElementById("popupName").textContent = name;
+                    document.getElementById("popup1").style.display = "block";
+                    currentPopup = 1;
+                }, 2000); // 2 detik untuk efek loading
+            } else {
+                alert("Harap masukkan nama terlebih dahulu!");
+            }
+        }
+
+        function nextPopup(popupNumber) {
+            document.getElementById(`popup${currentPopup}`).style.display = "none";
+            document.getElementById(`popup${popupNumber}`).style.display = "block";
+            currentPopup = popupNumber;
+        }
+
+        function endPopups() {
+            document.getElementById("clappingAudio").play();
+            displayConfetti();
+            setTimeout(() => {
+                alert("Semoga hari mu menyenankan!");
+            }, 3000);
+        }
+
+        function displayConfetti() {
+            var confetti = document.getElementById("confetti");
+            confetti.style.display = "block";
+            confetti.style.animation = "confettiFall 3s infinite";
+
+            // Add confetti elements to display
+            for (let i = 0; i < 100; i++) {
+                var confettiPiece = document.createElement("div");
+                confettiPiece.style.position = "absolute";
+                confettiPiece.style.width = "10px";
+                confettiPiece.style.height = "10px";
+                confettiPiece.style.backgroundColor = getRandomColor();
+                confettiPiece.style.top = `${Math.random() * 100}%`;
+                confettiPiece.style.left = `${Math.random() * 100}%`;
+                confettiPiece.style.animation = `confettiFall ${Math.random() * 5 + 3}s ease-in-out forwards`;
+                confetti.appendChild(confettiPiece);
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ["#FF6347", "#FFFF00", "#32CD32", "#1E90FF", "#FF69B4"];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        let nama = "Ridho";
+    console.log("apakah kamu memiliki rasa");
+    console.log("sama")
+    console.log("dengan ku")
+        
+    </script>
+</body>
+</html>
